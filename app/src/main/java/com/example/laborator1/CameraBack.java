@@ -28,7 +28,6 @@ import android.view.TextureView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -49,7 +48,6 @@ public class CameraBack extends AppCompatActivity {
     private TextureView mImageView = null;
     private HandlerThread mBackgroundThread;
     private Handler mBackgroundHandler = null;
-//    Boolean chooseCamera = getIntent().getBooleanExtra("CHOOSE_CAMERA", true);
 
 
     private void startBackgroundThread() {
@@ -77,7 +75,7 @@ public class CameraBack extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera_back);
-
+        int chooseCamera = getIntent().getIntExtra("CHOOSE_CAMERA", 0);
 
         Log.d(LOG_TAG, "Запрашиваем разрешение");
         if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
@@ -88,32 +86,8 @@ public class CameraBack extends AppCompatActivity {
             requestPermissions(new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
         }
 
-
-        final Button mButtonOpenCamera1 = (Button) findViewById(R.id.button1);
-        final Button mButtonOpenCamera2 = (Button) findViewById(R.id.button2);
         final Button mButtonToMakeShot = (Button) findViewById(R.id.imgCapture);
         mImageView = findViewById(R.id.view_finder);
-
-        mButtonOpenCamera1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (myCameras[CAMERA2].isOpen()) {myCameras[CAMERA2].closeCamera();}
-                if (myCameras[CAMERA1] != null) {
-                    if (!myCameras[CAMERA1].isOpen()) myCameras[CAMERA1].openCamera();
-                }
-            }
-        });
-
-        mButtonOpenCamera2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (myCameras[CAMERA1].isOpen()) {myCameras[CAMERA1].closeCamera();}
-                if (myCameras[CAMERA2] != null) {
-                    if (!myCameras[CAMERA2].isOpen()) myCameras[CAMERA2].openCamera();
-                }
-            }
-        });
-
 
         mButtonToMakeShot.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -154,6 +128,20 @@ public class CameraBack extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        if (chooseCamera == 0) {
+            View v;
+            if (myCameras[CAMERA2].isOpen()) {myCameras[CAMERA2].closeCamera();}
+            if (myCameras[CAMERA1] != null) {
+                if (!myCameras[CAMERA1].isOpen()) myCameras[CAMERA1].openCamera();
+            }
+        }
+        if (chooseCamera == 1){
+            View v;
+            if (myCameras[CAMERA1].isOpen()) {myCameras[CAMERA1].closeCamera();}
+            if (myCameras[CAMERA2] != null) {
+                if (!myCameras[CAMERA2].isOpen()) myCameras[CAMERA2].openCamera();
+            }
+        }
 
     }
 
