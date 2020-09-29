@@ -27,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String CHANNEL_ID = "CHANNEL_ID";
     private static final int NOTIFY_ID = 1;
     private Handler mHandler = new Handler();
+    // choseCamera is boolean. TRUE stays for back, FALSE stays for front
+    boolean chooseCamera;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,14 +50,23 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 if(front.isChecked()) {
-                    textView2.setText("Back Camera is on");
+                    //back camera
+                    chooseCamera = true;openCamera();
                 }
 
                 if(back.isChecked()) {
-                    textView2.setText("Front Camera is on");
+                    //front camera
+                    chooseCamera = false;openCamera();
                 }
+
             }
         });
+    }
+
+    public void openCamera() {
+        Intent intent = new Intent(MainActivity.this, CameraBack.class);
+//        intent.putExtra("CHOOSE_CAMERA", chooseCamera);
+        startActivity(intent);
     }
 
     public static void createChannelIfNeeded(NotificationManager manager) {

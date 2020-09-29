@@ -6,8 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-<!--    <uses-feature android:name="android.hardware.camera" android:required="true" />-->
-
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
