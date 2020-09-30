@@ -8,15 +8,26 @@ import android.app.PendingIntent;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import static androidx.core.app.NotificationCompat.PRIORITY_HIGH;
 import static com.example.laborator1.R.drawable.ic_baseline_notifications_24;
@@ -34,13 +45,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        setText();
+        turnOnCamera();
         pushNotification();
         search();
+        getImage();
     }
 
-    public void setText() {
-        final TextView textView2 = (TextView) findViewById(R.id.textView2);
+    public void turnOnCamera() {
+
         final Button button = (Button) findViewById(R.id.check);
         final RadioButton front = (RadioButton) findViewById(R.id.bCamera);
         final RadioButton back = (RadioButton) findViewById(R.id.fCamera);
@@ -128,6 +140,24 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(viewSearch);
             }
         });
+    }
+
+    public void getImage() {
+        final Button button = (Button) findViewById(R.id.randomImage);
+        final String url = "https://picsum.photos/200/300?random=1";
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                randomImage(url);
+            }
+        });
+    }
+
+    public void randomImage(String url) {
+        ImageView img= (ImageView) findViewById(R.id.imageView);
+        Picasso.with(MainActivity.this)
+                .load(url)
+                .into(img);
     }
 
 }
